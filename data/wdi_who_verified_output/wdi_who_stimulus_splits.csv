@@ -1,0 +1,193 @@
+iso3,country_name,region,income_level,split
+AFG,Afghanistan,"Middle East, North Africa, Afghanistan & Pakistan",Low income,warmup_15
+AGO,Angola,Sub-Saharan Africa ,Lower middle income,evaluation
+ALB,Albania,Europe & Central Asia,Upper middle income,evaluation
+AND,Andorra,Europe & Central Asia,High income,evaluation
+ARE,United Arab Emirates,"Middle East, North Africa, Afghanistan & Pakistan",High income,evaluation
+ARG,Argentina,Latin America & Caribbean ,Upper middle income,evaluation
+ARM,Armenia,Europe & Central Asia,Upper middle income,warmup_15
+ATG,Antigua and Barbuda,Latin America & Caribbean ,High income,evaluation
+AUS,Australia,East Asia & Pacific,High income,evaluation
+AUT,Austria,Europe & Central Asia,High income,evaluation
+AZE,Azerbaijan,Europe & Central Asia,Upper middle income,evaluation
+BDI,Burundi,Sub-Saharan Africa ,Low income,evaluation
+BEL,Belgium,Europe & Central Asia,High income,evaluation
+BEN,Benin,Sub-Saharan Africa ,Lower middle income,evaluation
+BFA,Burkina Faso,Sub-Saharan Africa ,Low income,evaluation
+BGD,Bangladesh,South Asia,Lower middle income,evaluation
+BGR,Bulgaria,Europe & Central Asia,High income,evaluation
+BHR,Bahrain,"Middle East, North Africa, Afghanistan & Pakistan",High income,evaluation
+BHS,"Bahamas, The",Latin America & Caribbean ,High income,evaluation
+BIH,Bosnia and Herzegovina,Europe & Central Asia,Upper middle income,evaluation
+BLR,Belarus,Europe & Central Asia,Upper middle income,evaluation
+BLZ,Belize,Latin America & Caribbean ,Upper middle income,evaluation
+BOL,Bolivia,Latin America & Caribbean ,Lower middle income,warmup_15
+BRA,Brazil,Latin America & Caribbean ,Upper middle income,warmup_15
+BRB,Barbados,Latin America & Caribbean ,High income,evaluation
+BRN,Brunei Darussalam,East Asia & Pacific,High income,evaluation
+BTN,Bhutan,South Asia,Lower middle income,evaluation
+BWA,Botswana,Sub-Saharan Africa ,Upper middle income,warmup_15
+CAF,Central African Republic,Sub-Saharan Africa ,Low income,evaluation
+CAN,Canada,North America,High income,warmup_15
+CHE,Switzerland,Europe & Central Asia,High income,evaluation
+CHL,Chile,Latin America & Caribbean ,High income,evaluation
+CHN,China,East Asia & Pacific,Upper middle income,evaluation
+CIV,Cote d'Ivoire,Sub-Saharan Africa ,Lower middle income,evaluation
+CMR,Cameroon,Sub-Saharan Africa ,Lower middle income,evaluation
+COD,"Congo, Dem. Rep.",Sub-Saharan Africa ,Low income,evaluation
+COG,"Congo, Rep.",Sub-Saharan Africa ,Lower middle income,evaluation
+COL,Colombia,Latin America & Caribbean ,Upper middle income,evaluation
+COM,Comoros,Sub-Saharan Africa ,Lower middle income,evaluation
+CPV,Cabo Verde,Sub-Saharan Africa ,Upper middle income,evaluation
+CRI,Costa Rica,Latin America & Caribbean ,High income,evaluation
+CUB,Cuba,Latin America & Caribbean ,Upper middle income,evaluation
+CYP,Cyprus,Europe & Central Asia,High income,evaluation
+CZE,Czechia,Europe & Central Asia,High income,evaluation
+DEU,Germany,Europe & Central Asia,High income,evaluation
+DJI,Djibouti,"Middle East, North Africa, Afghanistan & Pakistan",Lower middle income,evaluation
+DMA,Dominica,Latin America & Caribbean ,Upper middle income,evaluation
+DNK,Denmark,Europe & Central Asia,High income,evaluation
+DOM,Dominican Republic,Latin America & Caribbean ,Upper middle income,evaluation
+DZA,Algeria,"Middle East, North Africa, Afghanistan & Pakistan",Upper middle income,evaluation
+ECU,Ecuador,Latin America & Caribbean ,Upper middle income,evaluation
+EGY,"Egypt, Arab Rep.","Middle East, North Africa, Afghanistan & Pakistan",Lower middle income,evaluation
+ERI,Eritrea,Sub-Saharan Africa ,Low income,evaluation
+ESP,Spain,Europe & Central Asia,High income,evaluation
+EST,Estonia,Europe & Central Asia,High income,evaluation
+ETH,Ethiopia,Sub-Saharan Africa ,Low income,evaluation
+FIN,Finland,Europe & Central Asia,High income,evaluation
+FJI,Fiji,East Asia & Pacific,Upper middle income,evaluation
+FRA,France,Europe & Central Asia,High income,warmup_15
+FSM,"Micronesia, Fed. Sts.",East Asia & Pacific,Upper middle income,evaluation
+GAB,Gabon,Sub-Saharan Africa ,Upper middle income,evaluation
+GBR,United Kingdom,Europe & Central Asia,High income,evaluation
+GEO,Georgia,Europe & Central Asia,Upper middle income,evaluation
+GHA,Ghana,Sub-Saharan Africa ,Lower middle income,evaluation
+GIN,Guinea,Sub-Saharan Africa ,Lower middle income,evaluation
+GMB,"Gambia, The",Sub-Saharan Africa ,Low income,evaluation
+GNB,Guinea-Bissau,Sub-Saharan Africa ,Low income,evaluation
+GNQ,Equatorial Guinea,Sub-Saharan Africa ,Upper middle income,evaluation
+GRC,Greece,Europe & Central Asia,High income,evaluation
+GRD,Grenada,Latin America & Caribbean ,Upper middle income,evaluation
+GTM,Guatemala,Latin America & Caribbean ,Upper middle income,evaluation
+GUY,Guyana,Latin America & Caribbean ,High income,evaluation
+HND,Honduras,Latin America & Caribbean ,Lower middle income,evaluation
+HRV,Croatia,Europe & Central Asia,High income,evaluation
+HTI,Haiti,Latin America & Caribbean ,Lower middle income,evaluation
+HUN,Hungary,Europe & Central Asia,High income,evaluation
+IDN,Indonesia,East Asia & Pacific,Upper middle income,evaluation
+IND,India,South Asia,Lower middle income,evaluation
+IRL,Ireland,Europe & Central Asia,High income,warmup_15
+IRN,"Iran, Islamic Rep.","Middle East, North Africa, Afghanistan & Pakistan",Upper middle income,evaluation
+IRQ,Iraq,"Middle East, North Africa, Afghanistan & Pakistan",Upper middle income,evaluation
+ISL,Iceland,Europe & Central Asia,High income,evaluation
+ISR,Israel,"Middle East, North Africa, Afghanistan & Pakistan",High income,evaluation
+ITA,Italy,Europe & Central Asia,High income,evaluation
+JAM,Jamaica,Latin America & Caribbean ,Upper middle income,evaluation
+JOR,Jordan,"Middle East, North Africa, Afghanistan & Pakistan",Upper middle income,evaluation
+JPN,Japan,East Asia & Pacific,High income,evaluation
+KAZ,Kazakhstan,Europe & Central Asia,Upper middle income,evaluation
+KEN,Kenya,Sub-Saharan Africa ,Lower middle income,evaluation
+KGZ,Kyrgyz Republic,Europe & Central Asia,Lower middle income,evaluation
+KHM,Cambodia,East Asia & Pacific,Lower middle income,evaluation
+KIR,Kiribati,East Asia & Pacific,Lower middle income,evaluation
+KNA,St. Kitts and Nevis,Latin America & Caribbean ,High income,evaluation
+KOR,"Korea, Rep.",East Asia & Pacific,High income,evaluation
+KWT,Kuwait,"Middle East, North Africa, Afghanistan & Pakistan",High income,evaluation
+LAO,Lao PDR,East Asia & Pacific,Lower middle income,evaluation
+LBN,Lebanon,"Middle East, North Africa, Afghanistan & Pakistan",Lower middle income,evaluation
+LBR,Liberia,Sub-Saharan Africa ,Low income,evaluation
+LBY,Libya,"Middle East, North Africa, Afghanistan & Pakistan",Upper middle income,evaluation
+LCA,St. Lucia,Latin America & Caribbean ,Upper middle income,evaluation
+LKA,Sri Lanka,South Asia,Upper middle income,evaluation
+LSO,Lesotho,Sub-Saharan Africa ,Lower middle income,evaluation
+LTU,Lithuania,Europe & Central Asia,High income,evaluation
+LUX,Luxembourg,Europe & Central Asia,High income,evaluation
+LVA,Latvia,Europe & Central Asia,High income,evaluation
+MAR,Morocco,"Middle East, North Africa, Afghanistan & Pakistan",Lower middle income,evaluation
+MCO,Monaco,Europe & Central Asia,High income,evaluation
+MDA,Moldova,Europe & Central Asia,Upper middle income,evaluation
+MDG,Madagascar,Sub-Saharan Africa ,Low income,evaluation
+MDV,Maldives,South Asia,Upper middle income,evaluation
+MEX,Mexico,Latin America & Caribbean ,Upper middle income,evaluation
+MHL,Marshall Islands,East Asia & Pacific,Upper middle income,warmup_15
+MKD,North Macedonia,Europe & Central Asia,Upper middle income,evaluation
+MLI,Mali,Sub-Saharan Africa ,Low income,evaluation
+MLT,Malta,"Middle East, North Africa, Afghanistan & Pakistan",High income,evaluation
+MMR,Myanmar,East Asia & Pacific,Lower middle income,evaluation
+MNE,Montenegro,Europe & Central Asia,Upper middle income,evaluation
+MNG,Mongolia,East Asia & Pacific,Upper middle income,evaluation
+MOZ,Mozambique,Sub-Saharan Africa ,Low income,evaluation
+MRT,Mauritania,Sub-Saharan Africa ,Lower middle income,evaluation
+MUS,Mauritius,Sub-Saharan Africa ,Upper middle income,evaluation
+MWI,Malawi,Sub-Saharan Africa ,Low income,evaluation
+MYS,Malaysia,East Asia & Pacific,Upper middle income,evaluation
+NAM,Namibia,Sub-Saharan Africa ,Lower middle income,warmup_15
+NER,Niger,Sub-Saharan Africa ,Low income,evaluation
+NGA,Nigeria,Sub-Saharan Africa ,Lower middle income,warmup_15
+NIC,Nicaragua,Latin America & Caribbean ,Lower middle income,warmup_15
+NLD,Netherlands,Europe & Central Asia,High income,evaluation
+NOR,Norway,Europe & Central Asia,High income,evaluation
+NPL,Nepal,South Asia,Lower middle income,evaluation
+NRU,Naoero,East Asia & Pacific,High income,evaluation
+NZL,New Zealand,East Asia & Pacific,High income,evaluation
+OMN,Oman,"Middle East, North Africa, Afghanistan & Pakistan",High income,evaluation
+PAK,Pakistan,"Middle East, North Africa, Afghanistan & Pakistan",Lower middle income,evaluation
+PAN,Panama,Latin America & Caribbean ,High income,evaluation
+PER,Peru,Latin America & Caribbean ,Upper middle income,evaluation
+PHL,Philippines,East Asia & Pacific,Upper middle income,evaluation
+PLW,Palau,East Asia & Pacific,High income,evaluation
+PNG,Papua New Guinea,East Asia & Pacific,Lower middle income,evaluation
+POL,Poland,Europe & Central Asia,High income,evaluation
+PRT,Portugal,Europe & Central Asia,High income,evaluation
+PRY,Paraguay,Latin America & Caribbean ,Upper middle income,evaluation
+PSE,West Bank and Gaza,"Middle East, North Africa, Afghanistan & Pakistan",Lower middle income,evaluation
+QAT,Qatar,"Middle East, North Africa, Afghanistan & Pakistan",High income,evaluation
+ROU,Romania,Europe & Central Asia,High income,evaluation
+RUS,Russian Federation,Europe & Central Asia,High income,evaluation
+RWA,Rwanda,Sub-Saharan Africa ,Low income,evaluation
+SAU,Saudi Arabia,"Middle East, North Africa, Afghanistan & Pakistan",High income,evaluation
+SDN,Sudan,Sub-Saharan Africa ,Low income,evaluation
+SEN,Senegal,Sub-Saharan Africa ,Lower middle income,evaluation
+SGP,Singapore,East Asia & Pacific,High income,warmup_15
+SLB,Solomon Islands,East Asia & Pacific,Lower middle income,evaluation
+SLE,Sierra Leone,Sub-Saharan Africa ,Low income,evaluation
+SLV,El Salvador,Latin America & Caribbean ,Upper middle income,evaluation
+SMR,San Marino,Europe & Central Asia,High income,evaluation
+SOM,"Somalia, Fed. Rep.",Sub-Saharan Africa ,Low income,evaluation
+SRB,Serbia,Europe & Central Asia,Upper middle income,evaluation
+SSD,South Sudan,Sub-Saharan Africa ,Low income,evaluation
+STP,Sao Tome and Principe,Sub-Saharan Africa ,Lower middle income,warmup_15
+SUR,Suriname,Latin America & Caribbean ,Upper middle income,evaluation
+SVK,Slovak Republic,Europe & Central Asia,High income,evaluation
+SVN,Slovenia,Europe & Central Asia,High income,evaluation
+SWE,Sweden,Europe & Central Asia,High income,evaluation
+SWZ,Eswatini,Sub-Saharan Africa ,Lower middle income,evaluation
+SYC,Seychelles,Sub-Saharan Africa ,High income,evaluation
+SYR,Syrian Arab Republic,"Middle East, North Africa, Afghanistan & Pakistan",Low income,evaluation
+TCD,Chad,Sub-Saharan Africa ,Low income,evaluation
+TGO,Togo,Sub-Saharan Africa ,Lower middle income,evaluation
+THA,Thailand,East Asia & Pacific,Upper middle income,evaluation
+TJK,Tajikistan,Europe & Central Asia,Lower middle income,evaluation
+TKM,Turkmenistan,Europe & Central Asia,Upper middle income,evaluation
+TLS,Timor-Leste,East Asia & Pacific,Lower middle income,evaluation
+TON,Tonga,East Asia & Pacific,Upper middle income,evaluation
+TTO,Trinidad and Tobago,Latin America & Caribbean ,High income,evaluation
+TUN,Tunisia,"Middle East, North Africa, Afghanistan & Pakistan",Lower middle income,evaluation
+TUR,Turkiye,Europe & Central Asia,Upper middle income,evaluation
+TUV,Tuvalu,East Asia & Pacific,Upper middle income,evaluation
+TZA,Tanzania,Sub-Saharan Africa ,Lower middle income,evaluation
+UGA,Uganda,Sub-Saharan Africa ,Low income,evaluation
+UKR,Ukraine,Europe & Central Asia,Upper middle income,evaluation
+URY,Uruguay,Latin America & Caribbean ,High income,evaluation
+USA,United States,North America,High income,evaluation
+UZB,Uzbekistan,Europe & Central Asia,Lower middle income,evaluation
+VCT,St. Vincent and the Grenadines,Latin America & Caribbean ,Upper middle income,evaluation
+VEN,"Venezuela, RB",Latin America & Caribbean ,Lower middle income,evaluation
+VNM,Viet Nam,East Asia & Pacific,Upper middle income,evaluation
+VUT,Vanuatu,East Asia & Pacific,Lower middle income,warmup_15
+WSM,Samoa,East Asia & Pacific,Upper middle income,evaluation
+YEM,"Yemen, Rep.","Middle East, North Africa, Afghanistan & Pakistan",Low income,evaluation
+ZAF,South Africa,Sub-Saharan Africa ,Upper middle income,evaluation
+ZMB,Zambia,Sub-Saharan Africa ,Lower middle income,evaluation
+ZWE,Zimbabwe,Sub-Saharan Africa ,Lower middle income,evaluation
