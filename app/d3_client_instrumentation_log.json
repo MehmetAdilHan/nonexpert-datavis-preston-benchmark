@@ -1,0 +1,421 @@
+[
+  {
+    "t_ms": 0,
+    "type": "init",
+    "condition": "C1",
+    "detail": "Loaded built-in verified dataset"
+  },
+  {
+    "t_ms": 1555,
+    "type": "switch_condition",
+    "condition": "C2",
+    "stage": 1,
+    "detail": "C2"
+  },
+  {
+    "t_ms": 2887,
+    "type": "switch_condition",
+    "condition": "C3",
+    "stage": 1,
+    "detail": "C3"
+  },
+  {
+    "t_ms": 37455,
+    "type": "load_verified_csv",
+    "condition": "C3",
+    "stage": 1,
+    "detail": "wdi_who_country_means_imputed.csv (192 rows)"
+  },
+  {
+    "t_ms": 39809,
+    "type": "switch_stage",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "Stage 2"
+  },
+  {
+    "t_ms": 41081,
+    "type": "switch_stage",
+    "condition": "C3",
+    "stage": 3,
+    "detail": "Stage 3"
+  },
+  {
+    "t_ms": 43652,
+    "type": "filter_region",
+    "condition": "C3",
+    "stage": 3,
+    "detail": "East Asia & Pacific"
+  },
+  {
+    "t_ms": 47015,
+    "type": "toggle_vlat_mode",
+    "condition": "C3",
+    "stage": 3,
+    "detail": "high"
+  },
+  {
+    "t_ms": 51829,
+    "type": "switch_stage",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "Stage 2"
+  },
+  {
+    "t_ms": 52881,
+    "type": "switch_stage",
+    "condition": "C3",
+    "stage": 1,
+    "detail": "Stage 1"
+  },
+  {
+    "t_ms": 57046,
+    "type": "toggle_vlat_mode",
+    "condition": "C3",
+    "stage": 1,
+    "detail": "low"
+  },
+  {
+    "t_ms": 61327,
+    "type": "switch_condition",
+    "condition": "C1",
+    "stage": 1,
+    "detail": "C1"
+  },
+  {
+    "t_ms": 63143,
+    "type": "switch_condition",
+    "condition": "C2",
+    "stage": 1,
+    "detail": "C2"
+  },
+  {
+    "t_ms": 66594,
+    "type": "switch_condition",
+    "condition": "C3",
+    "stage": 1,
+    "detail": "C3"
+  },
+  {
+    "t_ms": 92515,
+    "type": "switch_condition",
+    "condition": "C1",
+    "stage": 1,
+    "detail": "C1"
+  },
+  {
+    "t_ms": 96776,
+    "type": "switch_condition",
+    "condition": "C2",
+    "stage": 1,
+    "detail": "C2"
+  },
+  {
+    "t_ms": 102902,
+    "type": "switch_condition",
+    "condition": "C3",
+    "stage": 1,
+    "detail": "C3"
+  },
+  {
+    "t_ms": 105900,
+    "type": "switch_stage",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "Stage 2"
+  },
+  {
+    "t_ms": 106933,
+    "type": "switch_stage",
+    "condition": "C3",
+    "stage": 1,
+    "detail": "Stage 1"
+  },
+  {
+    "t_ms": 108258,
+    "type": "switch_stage",
+    "condition": "C3",
+    "stage": 3,
+    "detail": "Stage 3"
+  },
+  {
+    "t_ms": 111991,
+    "type": "switch_stage",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "Stage 2"
+  },
+  {
+    "t_ms": 114973,
+    "type": "filter_region",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "Europe & Central Asia"
+  },
+  {
+    "t_ms": 117976,
+    "type": "filter_region",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "Sub-Saharan Africa "
+  },
+  {
+    "t_ms": 121062,
+    "type": "filter_region",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "North America"
+  },
+  {
+    "t_ms": 126458,
+    "type": "filter_region",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "South Asia"
+  },
+  {
+    "t_ms": 129453,
+    "type": "filter_region",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "Latin America & Caribbean "
+  },
+  {
+    "t_ms": 132468,
+    "type": "filter_region",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "Europe & Central Asia"
+  },
+  {
+    "t_ms": 135216,
+    "type": "filter_region",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "East Asia & Pacific"
+  },
+  {
+    "t_ms": 137856,
+    "type": "filter_region",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "ALL"
+  },
+  {
+    "t_ms": 139452,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "USA"
+  },
+  {
+    "t_ms": 140820,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "USA"
+  },
+  {
+    "t_ms": 145622,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "USA"
+  },
+  {
+    "t_ms": 150920,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "LTU"
+  },
+  {
+    "t_ms": 150934,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "LVA"
+  },
+  {
+    "t_ms": 150952,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "SYC"
+  },
+  {
+    "t_ms": 150969,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "VEN"
+  },
+  {
+    "t_ms": 151418,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "DZA"
+  },
+  {
+    "t_ms": 151435,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "TUN"
+  },
+  {
+    "t_ms": 151536,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "PER"
+  },
+  {
+    "t_ms": 152169,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "TUR"
+  },
+  {
+    "t_ms": 152202,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "SRB"
+  },
+  {
+    "t_ms": 152258,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "POL"
+  },
+  {
+    "t_ms": 152286,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "SVK"
+  },
+  {
+    "t_ms": 152336,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "URY"
+  },
+  {
+    "t_ms": 152402,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "EST"
+  },
+  {
+    "t_ms": 152436,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "CZE"
+  },
+  {
+    "t_ms": 154766,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "USA"
+  },
+  {
+    "t_ms": 155183,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "USA"
+  },
+  {
+    "t_ms": 157786,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "CHE"
+  },
+  {
+    "t_ms": 159067,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "USA"
+  },
+  {
+    "t_ms": 167368,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "CHE"
+  },
+  {
+    "t_ms": 167934,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "CHE"
+  },
+  {
+    "t_ms": 169467,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "NOR"
+  },
+  {
+    "t_ms": 169718,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "MCO"
+  },
+  {
+    "t_ms": 170001,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "MCO"
+  },
+  {
+    "t_ms": 171969,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "IRL"
+  },
+  {
+    "t_ms": 172008,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "NLD"
+  },
+  {
+    "t_ms": 172083,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "CAN"
+  },
+  {
+    "t_ms": 172319,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "NLD"
+  },
+  {
+    "t_ms": 172336,
+    "type": "hover_country",
+    "condition": "C3",
+    "stage": 2,
+    "detail": "SWE"
+  }
+]

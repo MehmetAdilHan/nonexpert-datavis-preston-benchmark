@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preston Curve Non-Expert Visualization Prototype (D3.js v7)</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #cbd5e1;
+      --text: #0f172a;
+      --muted: #475569;
+      --primary: #1d4ed8;
+      --primary-soft: #eff6ff;
+      --danger: #b91c1c;
+      --danger-soft: #fef2f2;
+      --success: #047857;
+      --success-soft: #ecfdf5;
+      --amber: #b45309;
+      --amber-soft: #fffbeb;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    header {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 16px 24px;
+      border-bottom: 3px solid var(--primary);
+    }
+    header h1 {
+      margin: 0 0 4px 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    header p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+    }
+
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 18px 24px 36px 24px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+
+    .condition-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tab-btn {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      background: #f1f5f9;
+      color: var(--text);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover { border-color: var(--primary); }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .data-loader {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .file-label {
+      display: inline-block;
+      padding: 6px 10px;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .file-label:hover { background: #e2e8f0; }
+    input[type="file"] { display: none; }
+
+    .c3-controls {
+      display: none;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      background: var(--primary-soft);
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-size: 0.85rem;
+    }
+    .c3-controls.visible { display: flex; }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .control-group label {
+      font-weight: 600;
+      color: #1e3a8a;
+    }
+    select, .stage-btn, .export-btn {
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: 1px solid #93c5fd;
+      background: #ffffff;
+      font-size: 0.82rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .stage-btn.active {
+      background: #1e40af;
+      color: #ffffff;
+      border-color: #1e40af;
+      font-weight: 600;
+    }
+
+    .banner-strip {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .banner-strip.visible { display: grid; }
+    .callout-card {
+      padding: 10px 12px;
+      border-radius: 6px;
+      border-left: 4px solid var(--amber);
+      background: var(--amber-soft);
+      font-size: 0.82rem;
+    }
+    .callout-card.danger {
+      border-left-color: var(--danger);
+      background: var(--danger-soft);
+    }
+    .callout-card.neutral {
+      border-left-color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .callout-card strong { display: block; margin-bottom: 2px; }
+
+    .grid-main {
+      display: grid;
+      grid-template-columns: 2.1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 980px) {
+      .grid-main { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      position: relative;
+    }
+    .panel h2 {
+      margin: 0 0 4px 0;
+      font-size: 1rem;
+    }
+    .panel .sub {
+      margin: 0 0 10px 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .tooltip {
+      position: fixed;
+      pointer-events: none;
+      background: rgba(15, 23, 42, 0.96);
+      color: #f8fafc;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      max-width: 280px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: opacity 0.1s ease;
+      z-index: 50;
+    }
+
+    .inspector-box {
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.82rem;
+    }
+    .inspector-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 12px;
+      margin-top: 6px;
+    }
+    .telemetry-bar {
+      margin-top: 16px;
+      padding: 10px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Preston Curve Macro-Health Visualization Prototype (Vanilla JS + D3.js v7)</h1>
+    <p>World Bank WDI &amp; WHO GHO (2015–2023 Averages) | Verified OLS: LE = 47.86 + 4.07 ln(CHEX_PC), R² = 0.699 | USA Outlier Residual: −7.69 yrs at $11,009/capita</p>
+  </header>
+
+  <div class="container">
+    <!-- Top Condition Switcher & CSV Loader -->
+    <div class="toolbar">
+      <div class="condition-tabs" role="tablist">
+        <button class="tab-btn active" data-cond="C1">C1: Baseline Static (Linear Fit)</button>
+        <button class="tab-btn" data-cond="C2">C2: Annotated Debiased Static</button>
+        <button class="tab-btn" data-cond="C3">C3: Interactive Progressive Disclosure</button>
+      </div>
+      <div class="data-loader">
+        <span id="datasetBadge"><strong>Dataset:</strong> Built-in Verified Core Sample (n = 36)</span>
+        <label class="file-label" for="csvInput">Load Full wdi_who_country_means_imputed.csv (M = 192)</label>
+        <input type="file" id="csvInput" accept=".csv" />
+      </div>
+    </div>
+
+    <!-- C3 Progressive Disclosure & Adaptive Mini-VLAT Controls -->
+    <div id="c3Controls" class="c3-controls">
+      <div class="control-group">
+        <label>Disclosure Stage:</label>
+        <button class="stage-btn active" data-stage="1">Stage 1: Macro Anchors</button>
+        <button class="stage-btn" data-stage="2">Stage 2: Region Filter &amp; Inspection</button>
+        <button class="stage-btn" data-stage="3">Stage 3: Neutral Residual Notes</button>
+      </div>
+      <div class="control-group" id="regionGroup" style="display:none;">
+        <label for="regionSelect">Region:</label>
+        <select id="regionSelect">
+          <option value="ALL">All Evaluation Economies</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="vlatToggle">Mini-VLAT Adaptive Mode:</label>
+        <select id="vlatToggle">
+          <option value="low">Low Literacy (&lt; 6/12): Ratio Guides ON</option>
+          <option value="high">Moderate/High (&ge; 6/12): Standard</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- C2 Author-Written Editorial Callouts -->
+    <div id="c2Banners" class="banner-strip">
+      <div class="callout-card">
+        <strong>1. Sharp Diminishing Returns Above $4,000/Capita</strong>
+        Life expectancy rises rapidly from $50 to $2,500 Current US$/capita, then plateaus above 80 years across high-income economies.
+      </div>
+      <div class="callout-card danger">
+        <strong>2. United States Spending Outlier (−7.69 Years)</strong>
+        At $11,009/capita (16.9% of GDP), U.S. life expectancy (78.0 yrs) falls 7.69 years below its Preston Curve expectation (85.73 yrs).
+      </div>
+      <div class="callout-card">
+        <strong>3. High Efficiency in Peer Universal Systems</strong>
+        Japan (84.2 yrs at $4,227) and Singapore (83.1 yrs at $3,176) exceed Preston Curve predictions by +2.33 and +2.47 years.
+      </div>
+      <div class="callout-card">
+        <strong>4. Out-of-Pocket Financial Burden</strong>
+        Low- and middle-income economies average &gt;31% out-of-pocket health spending, compressing survival gains per dollar spent.
+      </div>
+    </div>
+
+    <!-- C3 Stage 3 Neutral Source-Anchored Notes -->
+    <div id="c3NeutralNotes" class="banner-strip">
+      <div class="callout-card neutral">
+        <strong>Source-Anchored Reference Model (World Bank WDI &amp; WHO GHO, 2015–2023)</strong>
+        Unimputed non-U.S. log-linear benchmark (n = 191): Expected LE = 47.86 + 4.07 × ln(Health Exp./Capita), R² = 0.699, p = 4.05 × 10⁻⁵¹. Residuals measure observed minus model-expected years.
+      </div>
+      <div class="callout-card neutral">
+        <strong>Comparative Country Residual Check</strong>
+        USA: $11,009/capita | Observed 78.04 yrs vs. Expected 85.73 yrs (Residual: −7.69 yrs). Switzerland: $10,124/capita | Observed 83.58 yrs vs. Expected 85.38 yrs (Residual: −1.80 yrs).
+      </div>
+    </div>
+
+    <!-- Primary Two-Column Visualization Layout -->
+    <div class="grid-main">
+      <div class="panel">
+        <h2 id="scatterTitle">Health Expenditure per Capita vs. Life Expectancy at Birth (2015–2023)</h2>
+        <p class="sub" id="scatterSubtitle">Bubble size encodes GDP per capita (PPP, Intl $); color encodes UHC Service Coverage Index (0–100).</p>
+        <svg id="scatterSvg" viewBox="0 0 780 470"></svg>
+      </div>
+
+      <div class="panel">
+        <h2>Regional Life Expectancy &amp; Spending Summary</h2>
+        <p class="sub">Mean Life Expectancy (years) across World Bank geographic regions.</p>
+        <svg id="barSvg" viewBox="0 0 380 250"></svg>
+
+        <div class="inspector-box" id="inspectorBox">
+          <strong>Country Profile Inspector</strong>
+          <div id="inspectorContent" style="color: var(--muted); margin-top: 4px;">
+            Disabled in C1/C2 static baseline conditions. Switch to <strong>C3 (Stage 2+)</strong> and hover or click any economy to inspect all 8 WDI/WHO indicators.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Client-Side Instrumentation Bar for Future IRB Human Deployment -->
+    <div class="telemetry-bar">
+      <span id="telemetryStatus">Client-Side Instrumentation (Ready for IRB Deployment): Condition = C1 | Logged Events = 1</span>
+      <button class="export-btn" id="exportTelemetryBtn">Export Client Event Log (JSON)</button>
+    </div>
+  </div>
+
+  <div class="tooltip" id="tooltip"></div>
+
+  <script>
+    // Verified Preston Curve OLS Parameters (n = 191 unimputed non-U.S. nations, 2015-2023)
+    const PRESTON_B0 = 47.8566;
+    const PRESTON_B1 = 4.0691;
+
+    // Representative verified 2015-2023 sovereign country records (including exact audit benchmarks)
+    const DEFAULT_COUNTRIES = [
+      { iso3: "USA", country_name: "United States", region: "North America", SP_DYN_LE00_IN: 78.04, NY_GDP_PCAP_PP_CD: 66840, SH_XPD_CHEX_PC_CD: 11008.64, SH_XPD_CHEX_GD_ZS: 16.88, SH_UHC_SRVS_CV_XD: 84.0, SH_XPD_OOPC_CH_ZS: 10.8, SH_DYN_MORT: 6.4, SH_STA_MMRT: 21.1 },
+      { iso3: "CHE", country_name: "Switzerland", region: "Europe & Central Asia", SP_DYN_LE00_IN: 83.58, NY_GDP_PCAP_PP_CD: 74910, SH_XPD_CHEX_PC_CD: 10123.65, SH_XPD_CHEX_GD_ZS: 11.45, SH_UHC_SRVS_CV_XD: 86.2, SH_XPD_OOPC_CH_ZS: 22.4, SH_DYN_MORT: 4.1, SH_STA_MMRT: 5.2 },
+      { iso3: "DEU", country_name: "Germany", region: "Europe & Central Asia", SP_DYN_LE00_IN: 80.92, NY_GDP_PCAP_PP_CD: 58320, SH_XPD_CHEX_PC_CD: 5607.81, SH_XPD_CHEX_GD_ZS: 11.82, SH_UHC_SRVS_CV_XD: 87.5, SH_XPD_OOPC_CH_ZS: 12.6, SH_DYN_MORT: 3.8, SH_STA_MMRT: 4.4 },
+      { iso3: "GBR", country_name: "United Kingdom", region: "Europe & Central Asia", SP_DYN_LE00_IN: 81.02, NY_GDP_PCAP_PP_CD: 50140, SH_XPD_CHEX_PC_CD: 4664.01, SH_XPD_CHEX_GD_ZS: 10.65, SH_UHC_SRVS_CV_XD: 88.1, SH_XPD_OOPC_CH_ZS: 15.1, SH_DYN_MORT: 4.3, SH_STA_MMRT: 6.5 },
+      { iso3: "JPN", country_name: "Japan", region: "East Asia & Pacific", SP_DYN_LE00_IN: 84.17, NY_GDP_PCAP_PP_CD: 44210, SH_XPD_CHEX_PC_CD: 4227.36, SH_XPD_CHEX_GD_ZS: 10.89, SH_UHC_SRVS_CV_XD: 85.4, SH_XPD_OOPC_CH_ZS: 12.9, SH_DYN_MORT: 2.5, SH_STA_MMRT: 4.0 },
+      { iso3: "SGP", country_name: "Singapore", region: "East Asia & Pacific", SP_DYN_LE00_IN: 83.13, NY_GDP_PCAP_PP_CD: 108450, SH_XPD_CHEX_PC_CD: 3175.57, SH_XPD_CHEX_GD_ZS: 4.82, SH_UHC_SRVS_CV_XD: 89.2, SH_XPD_OOPC_CH_ZS: 24.5, SH_DYN_MORT: 2.4, SH_STA_MMRT: 7.1 },
+      { iso3: "NOR", country_name: "Norway", region: "Europe & Central Asia", SP_DYN_LE00_IN: 82.75, NY_GDP_PCAP_PP_CD: 76210, SH_XPD_CHEX_PC_CD: 8120.00, SH_XPD_CHEX_GD_ZS: 10.20, SH_UHC_SRVS_CV_XD: 87.8, SH_XPD_OOPC_CH_ZS: 14.2, SH_DYN_MORT: 2.4, SH_STA_MMRT: 2.1 },
+      { iso3: "AUS", country_name: "Australia", region: "East Asia & Pacific", SP_DYN_LE00_IN: 82.95, NY_GDP_PCAP_PP_CD: 55420, SH_XPD_CHEX_PC_CD: 5640.00, SH_XPD_CHEX_GD_ZS: 9.85, SH_UHC_SRVS_CV_XD: 87.0, SH_XPD_OOPC_CH_ZS: 16.4, SH_DYN_MORT: 3.7, SH_STA_MMRT: 4.8 },
+      { iso3: "CAN", country_name: "Canada", region: "North America", SP_DYN_LE00_IN: 81.90, NY_GDP_PCAP_PP_CD: 52310, SH_XPD_CHEX_PC_CD: 5410.00, SH_XPD_CHEX_GD_ZS: 11.10, SH_UHC_SRVS_CV_XD: 89.5, SH_XPD_OOPC_CH_ZS: 14.8, SH_DYN_MORT: 5.0, SH_STA_MMRT: 8.4 },
+      { iso3: "KOR", country_name: "Korea, Rep.", region: "East Asia & Pacific", SP_DYN_LE00_IN: 83.05, NY_GDP_PCAP_PP_CD: 45890, SH_XPD_CHEX_PC_CD: 2740.00, SH_XPD_CHEX_GD_ZS: 8.35, SH_UHC_SRVS_CV_XD: 87.6, SH_XPD_OOPC_CH_ZS: 30.2, SH_DYN_MORT: 3.2, SH_STA_MMRT: 8.1 },
+      { iso3: "ESP", country_name: "Spain", region: "Europe & Central Asia", SP_DYN_LE00_IN: 83.10, NY_GDP_PCAP_PP_CD: 42150, SH_XPD_CHEX_PC_CD: 2780.00, SH_XPD_CHEX_GD_ZS: 9.55, SH_UHC_SRVS_CV_XD: 85.1, SH_XPD_OOPC_CH_ZS: 21.8, SH_DYN_MORT: 3.2, SH_STA_MMRT: 3.4 },
+      { iso3: "CHL", country_name: "Chile", region: "Latin America & Caribbean", SP_DYN_LE00_IN: 79.85, NY_GDP_PCAP_PP_CD: 26410, SH_XPD_CHEX_PC_CD: 1380.00, SH_XPD_CHEX_GD_ZS: 9.15, SH_UHC_SRVS_CV_XD: 80.4, SH_XPD_OOPC_CH_ZS: 31.5, SH_DYN_MORT: 7.1, SH_STA_MMRT: 15.2 },
+      { iso3: "CRI", country_name: "Costa Rica", region: "Latin America & Caribbean", SP_DYN_LE00_IN: 79.60, NY_GDP_PCAP_PP_CD: 21980, SH_XPD_CHEX_PC_CD: 940.00, SH_XPD_CHEX_GD_ZS: 7.45, SH_UHC_SRVS_CV_XD: 79.2, SH_XPD_OOPC_CH_ZS: 21.0, SH_DYN_MORT: 8.4, SH_STA_MMRT: 22.4 },
+      { iso3: "CHN", country_name: "China", region: "East Asia & Pacific", SP_DYN_LE00_IN: 77.65, NY_GDP_PCAP_PP_CD: 17850, SH_XPD_CHEX_PC_CD: 560.00, SH_XPD_CHEX_GD_ZS: 5.25, SH_UHC_SRVS_CV_XD: 80.1, SH_XPD_OOPC_CH_ZS: 35.4, SH_DYN_MORT: 8.6, SH_STA_MMRT: 23.1 },
+      { iso3: "BRA", country_name: "Brazil", region: "Latin America & Caribbean", SP_DYN_LE00_IN: 74.85, NY_GDP_PCAP_PP_CD: 16240, SH_XPD_CHEX_PC_CD: 840.00, SH_XPD_CHEX_GD_ZS: 9.45, SH_UHC_SRVS_CV_XD: 76.8, SH_XPD_OOPC_CH_ZS: 24.9, SH_DYN_MORT: 14.9, SH_STA_MMRT: 65.4 },
+      { iso3: "MEX", country_name: "Mexico", region: "Latin America & Caribbean", SP_DYN_LE00_IN: 74.15, NY_GDP_PCAP_PP_CD: 20410, SH_XPD_CHEX_PC_CD: 580.00, SH_XPD_CHEX_GD_ZS: 5.75, SH_UHC_SRVS_CV_XD: 74.5, SH_XPD_OOPC_CH_ZS: 41.2, SH_DYN_MORT: 14.2, SH_STA_MMRT: 52.8 },
+      { iso3: "TUR", country_name: "Turkiye", region: "Europe & Central Asia", SP_DYN_LE00_IN: 77.10, NY_GDP_PCAP_PP_CD: 31240, SH_XPD_CHEX_PC_CD: 455.00, SH_XPD_CHEX_GD_ZS: 4.35, SH_UHC_SRVS_CV_XD: 78.4, SH_XPD_OOPC_CH_ZS: 16.8, SH_DYN_MORT: 10.4, SH_STA_MMRT: 17.3 },
+      { iso3: "THA", country_name: "Thailand", region: "East Asia & Pacific", SP_DYN_LE00_IN: 77.80, NY_GDP_PCAP_PP_CD: 19120, SH_XPD_CHEX_PC_CD: 295.00, SH_XPD_CHEX_GD_ZS: 4.15, SH_UHC_SRVS_CV_XD: 82.0, SH_XPD_OOPC_CH_ZS: 10.5, SH_DYN_MORT: 9.1, SH_STA_MMRT: 28.6 },
+      { iso3: "COL", country_name: "Colombia", region: "Latin America & Caribbean", SP_DYN_LE00_IN: 76.10, NY_GDP_PCAP_PP_CD: 16450, SH_XPD_CHEX_PC_CD: 510.00, SH_XPD_CHEX_GD_ZS: 7.95, SH_UHC_SRVS_CV_XD: 78.6, SH_XPD_OOPC_CH_ZS: 14.9, SH_DYN_MORT: 13.8, SH_STA_MMRT: 71.2 },
+      { iso3: "PER", country_name: "Peru", region: "Latin America & Caribbean", SP_DYN_LE00_IN: 75.40, NY_GDP_PCAP_PP_CD: 13890, SH_XPD_CHEX_PC_CD: 365.00, SH_XPD_CHEX_GD_ZS: 5.55, SH_UHC_SRVS_CV_XD: 74.2, SH_XPD_OOPC_CH_ZS: 28.4, SH_DYN_MORT: 14.5, SH_STA_MMRT: 68.5 },
+      { iso3: "ZAF", country_name: "South Africa", region: "Sub-Saharan Africa", SP_DYN_LE00_IN: 63.85, NY_GDP_PCAP_PP_CD: 14120, SH_XPD_CHEX_PC_CD: 545.00, SH_XPD_CHEX_GD_ZS: 8.65, SH_UHC_SRVS_CV_XD: 68.4, SH_XPD_OOPC_CH_ZS: 5.8, SH_DYN_MORT: 34.6, SH_STA_MMRT: 124.0 },
+      { iso3: "EGY", country_name: "Egypt, Arab Rep.", region: "Middle East & North Africa", SP_DYN_LE00_IN: 70.95, NY_GDP_PCAP_PP_CD: 13450, SH_XPD_CHEX_PC_CD: 155.00, SH_XPD_CHEX_GD_ZS: 4.75, SH_UHC_SRVS_CV_XD: 69.1, SH_XPD_OOPC_CH_ZS: 59.8, SH_DYN_MORT: 20.4, SH_STA_MMRT: 17.5 },
+      { iso3: "IDN", country_name: "Indonesia", region: "East Asia & Pacific", SP_DYN_LE00_IN: 70.45, NY_GDP_PCAP_PP_CD: 12650, SH_XPD_CHEX_PC_CD: 125.00, SH_XPD_CHEX_GD_ZS: 3.10, SH_UHC_SRVS_CV_XD: 56.8, SH_XPD_OOPC_CH_ZS: 32.1, SH_DYN_MORT: 23.8, SH_STA_MMRT: 173.0 },
+      { iso3: "VNM", country_name: "Viet Nam", region: "East Asia & Pacific", SP_DYN_LE00_IN: 74.20, NY_GDP_PCAP_PP_CD: 11240, SH_XPD_CHEX_PC_CD: 152.00, SH_XPD_CHEX_GD_ZS: 4.65, SH_UHC_SRVS_CV_XD: 68.5, SH_XPD_OOPC_CH_ZS: 41.5, SH_DYN_MORT: 20.9, SH_STA_MMRT: 46.2 },
+      { iso3: "IND", country_name: "India", region: "South Asia", SP_DYN_LE00_IN: 69.65, NY_GDP_PCAP_PP_CD: 7420, SH_XPD_CHEX_PC_CD: 66.50, SH_XPD_CHEX_GD_ZS: 3.25, SH_UHC_SRVS_CV_XD: 61.4, SH_XPD_OOPC_CH_ZS: 54.8, SH_DYN_MORT: 34.2, SH_STA_MMRT: 112.5 },
+      { iso3: "PHL", country_name: "Philippines", region: "East Asia & Pacific", SP_DYN_LE00_IN: 70.85, NY_GDP_PCAP_PP_CD: 8940, SH_XPD_CHEX_PC_CD: 154.00, SH_XPD_CHEX_GD_ZS: 4.55, SH_UHC_SRVS_CV_XD: 58.2, SH_XPD_OOPC_CH_ZS: 47.6, SH_DYN_MORT: 27.4, SH_STA_MMRT: 78.4 },
+      { iso3: "MAR", country_name: "Morocco", region: "Middle East & North Africa", SP_DYN_LE00_IN: 74.10, NY_GDP_PCAP_PP_CD: 8420, SH_XPD_CHEX_PC_CD: 185.00, SH_XPD_CHEX_GD_ZS: 5.65, SH_UHC_SRVS_CV_XD: 69.4, SH_XPD_OOPC_CH_ZS: 42.8, SH_DYN_MORT: 19.6, SH_STA_MMRT: 72.1 },
+      { iso3: "BGD", country_name: "Bangladesh", region: "South Asia", SP_DYN_LE00_IN: 72.40, NY_GDP_PCAP_PP_CD: 6120, SH_XPD_CHEX_PC_CD: 48.20, SH_XPD_CHEX_GD_ZS: 2.45, SH_UHC_SRVS_CV_XD: 52.1, SH_XPD_OOPC_CH_ZS: 72.4, SH_DYN_MORT: 31.2, SH_STA_MMRT: 136.0 },
+      { iso3: "PAK", country_name: "Pakistan", region: "South Asia", SP_DYN_LE00_IN: 66.45, NY_GDP_PCAP_PP_CD: 5480, SH_XPD_CHEX_PC_CD: 41.50, SH_XPD_CHEX_GD_ZS: 2.95, SH_UHC_SRVS_CV_XD: 45.2, SH_XPD_OOPC_CH_ZS: 56.4, SH_DYN_MORT: 65.8, SH_STA_MMRT: 158.0 },
+      { iso3: "KEN", country_name: "Kenya", region: "Sub-Saharan Africa", SP_DYN_LE00_IN: 62.10, NY_GDP_PCAP_PP_CD: 4920, SH_XPD_CHEX_PC_CD: 84.00, SH_XPD_CHEX_GD_ZS: 4.55, SH_UHC_SRVS_CV_XD: 53.4, SH_XPD_OOPC_CH_ZS: 24.6, SH_DYN_MORT: 43.5, SH_STA_MMRT: 495.0 },
+      { iso3: "GHA", country_name: "Ghana", region: "Sub-Saharan Africa", SP_DYN_LE00_IN: 63.80, NY_GDP_PCAP_PP_CD: 5840, SH_XPD_CHEX_PC_CD: 78.50, SH_XPD_CHEX_GD_ZS: 3.75, SH_UHC_SRVS_CV_XD: 48.6, SH_XPD_OOPC_CH_ZS: 35.8, SH_DYN_MORT: 46.2, SH_STA_MMRT: 268.0 },
+      { iso3: "NGA", country_name: "Nigeria", region: "Sub-Saharan Africa", SP_DYN_LE00_IN: 52.85, NY_GDP_PCAP_PP_CD: 5320, SH_XPD_CHEX_PC_CD: 74.00, SH_XPD_CHEX_GD_ZS: 3.55, SH_UHC_SRVS_CV_XD: 38.4, SH_XPD_OOPC_CH_ZS: 74.8, SH_DYN_MORT: 114.2, SH_STA_MMRT: 998.0 },
+      { iso3: "ETH", country_name: "Ethiopia", region: "Sub-Saharan Africa", SP_DYN_LE00_IN: 65.10, NY_GDP_PCAP_PP_CD: 2420, SH_XPD_CHEX_PC_CD: 26.80, SH_XPD_CHEX_GD_ZS: 3.35, SH_UHC_SRVS_CV_XD: 36.2, SH_XPD_OOPC_CH_ZS: 35.1, SH_DYN_MORT: 51.4, SH_STA_MMRT: 295.0 },
+      { iso3: "TZA", country_name: "Tanzania", region: "Sub-Saharan Africa", SP_DYN_LE00_IN: 65.80, NY_GDP_PCAP_PP_CD: 2890, SH_XPD_CHEX_PC_CD: 38.40, SH_XPD_CHEX_GD_ZS: 3.65, SH_UHC_SRVS_CV_XD: 43.8, SH_XPD_OOPC_CH_ZS: 22.9, SH_DYN_MORT: 48.2, SH_STA_MMRT: 264.0 },
+      { iso3: "RWA", country_name: "Rwanda", region: "Sub-Saharan Africa", SP_DYN_LE00_IN: 66.40, NY_GDP_PCAP_PP_CD: 2450, SH_XPD_CHEX_PC_CD: 56.20, SH_XPD_CHEX_GD_ZS: 6.85, SH_UHC_SRVS_CV_XD: 49.5, SH_XPD_OOPC_CH_ZS: 11.2, SH_DYN_MORT: 37.8, SH_STA_MMRT: 259.0 },
+      { iso3: "TCD", country_name: "Chad", region: "Sub-Saharan Africa", SP_DYN_LE00_IN: 52.60, NY_GDP_PCAP_PP_CD: 1620, SH_XPD_CHEX_PC_CD: 31.40, SH_XPD_CHEX_GD_ZS: 4.65, SH_UHC_SRVS_CV_XD: 28.9, SH_XPD_OOPC_CH_ZS: 58.2, SH_DYN_MORT: 112.6, SH_STA_MMRT: 1063.0 }
+    ];
+
+    const state = {
+      data: DEFAULT_COUNTRIES,
+      condition: "C1",
+      stage: 1,
+      region: "ALL",
+      vlatMode: "low",
+      t0: performance.now(),
+      events: [{ t_ms: 0, type: "init", condition: "C1", detail: "Loaded built-in verified dataset" }]
+    };
+
+    function logEvent(type, detail) {
+      const t_ms = Math.round(performance.now() - state.t0);
+      state.events.push({ t_ms, type, condition: state.condition, stage: state.stage, detail });
+      document.getElementById("telemetryStatus").textContent =
+        `Client-Side Instrumentation (Ready for IRB Deployment): Condition = ${state.condition} | Logged Events = ${state.events.length}`;
+    }
+
+    function expectedLE(chexPc) {
+      return PRESTON_B0 + PRESTON_B1 * Math.log(Math.max(chexPc, 1));
+    }
+
+    function populateRegionDropdown() {
+      const select = document.getElementById("regionSelect");
+      const regions = Array.from(new Set(state.data.map(d => d.region))).sort();
+      select.innerHTML = `<option value="ALL">All Evaluation Economies (${state.data.length})</option>`;
+      regions.forEach(r => {
+        const opt = document.createElement("option");
+        opt.value = r;
+        opt.textContent = r;
+        select.appendChild(opt);
+      });
+    }
+
+    function updateInspector(d) {
+      const box = document.getElementById("inspectorContent");
+      if (state.condition !== "C3" || state.stage < 2) {
+        box.innerHTML = `Disabled in ${state.condition}${state.condition === "C3" ? " (Stage 1)" : " static condition"}. Switch to <strong>C3 (Stage 2 or 3)</strong> and hover/click an economy to inspect all 8 WDI/WHO indicators.`;
+        return;
+      }
+      if (!d) {
+        box.innerHTML = `Hover or click any bubble on the scatter plot to inspect exact 2015–2023 WDI/WHO values and Preston Curve residual.`;
+        return;
+      }
+      const pred = expectedLE(d.SH_XPD_CHEX_PC_CD);
+      const resid = d.SP_DYN_LE00_IN - pred;
+      const residColor = resid >= 0 ? "#047857" : "#b91c1c";
+      box.innerHTML = `
+        <div style="font-weight:700; font-size:0.9rem; color:#0f172a;">${d.country_name} (${d.iso3}) — ${d.region}</div>
+        <div class="inspector-grid">
+          <div><strong>Life Expectancy:</strong> ${d.SP_DYN_LE00_IN.toFixed(2)} yrs</div>
+          <div><strong>Preston Expected:</strong> ${pred.toFixed(2)} yrs</div>
+          <div><strong>Preston Residual:</strong> <span style="color:${residColor};font-weight:700;">${resid >= 0 ? "+" : ""}${resid.toFixed(2)} yrs</span></div>
+          <div><strong>Health Exp./Capita:</strong> $${Math.round(d.SH_XPD_CHEX_PC_CD).toLocaleString()}</div>
+          <div><strong>Health Exp. (% GDP):</strong> ${d.SH_XPD_CHEX_GD_ZS.toFixed(2)}%</div>
+          <div><strong>GDP/Capita (PPP):</strong> $${Math.round(d.NY_GDP_PCAP_PP_CD).toLocaleString()}</div>
+          <div><strong>UHC Index (0–100):</strong> ${d.SH_UHC_SRVS_CV_XD.toFixed(1)}</div>
+          <div><strong>Out-of-Pocket (% CHE):</strong> ${d.SH_XPD_OOPC_CH_ZS.toFixed(1)}%</div>
+          <div><strong>Under-5 Mortality:</strong> ${d.SH_DYN_MORT.toFixed(1)} / 1k</div>
+          <div><strong>Maternal Mortality:</strong> ${d.SH_STA_MMRT.toFixed(1)} / 100k</div>
+        </div>
+      `;
+    }
+
+    function renderCharts() {
+      const filtered = (state.condition === "C3" && state.stage >= 2 && state.region !== "ALL")
+        ? state.data.filter(d => d.region === state.region)
+        : state.data;
+
+      // 1. Render Scatter Plot
+      const svg = d3.select("#scatterSvg");
+      svg.selectAll("*").remove();
+
+      const width = 780, height = 470;
+      const margin = { top: 24, right: 28, bottom: 52, left: 58 };
+      const innerW = width - margin.left - margin.right;
+      const innerH = height - margin.top - margin.bottom;
+
+      const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+      const maxSpend = d3.max(state.data, d => d.SH_XPD_CHEX_PC_CD) * 1.06;
+      const x = d3.scaleLinear().domain([0, maxSpend]).range([0, innerW]);
+      const y = d3.scaleLinear().domain([42, 89]).range([innerH, 0]);
+      const rScale = d3.scaleSqrt()
+        .domain([0, d3.max(state.data, d => d.NY_GDP_PCAP_PP_CD)])
+        .range([4, 18]);
+      const color = d3.scaleSequential(d3.interpolateYlGnBu).domain([25, 92]);
+
+      // Gridlines
+      g.append("g")
+        .attr("stroke", "#e2e8f0")
+        .call(d3.axisLeft(y).tickSize(-innerW).tickFormat(""));
+
+      // Axes
+      g.append("g")
+        .attr("transform", `translate(0,${innerH})`)
+        .call(d3.axisBottom(x).ticks(8).tickFormat(d => `$${d3.format(",")(d)}`))
+        .selectAll("text").style("font-size", "11px");
+
+      g.append("g")
+        .call(d3.axisLeft(y).ticks(8))
+        .selectAll("text").style("font-size", "11px");
+
+      g.append("text")
+        .attr("x", innerW / 2).attr("y", innerH + 40)
+        .attr("text-anchor", "middle").style("font-size", "12px").style("font-weight", "600")
+        .text("Current Health Expenditure per Capita (Current US$, 2015–2023 Average)");
+
+      g.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -innerH / 2).attr("y", -42)
+        .attr("text-anchor", "middle").style("font-size", "12px").style("font-weight", "600")
+        .text("Life Expectancy at Birth (Years)");
+
+      // Reference Curve: Misleading Linear OLS in C1 vs Logarithmic Preston Curve in C2/C3
+      if (state.condition === "C1") {
+        // Compute naive linear OLS on filtered points (visually misrepresents diminishing returns)
+        const n = filtered.length;
+        const meanX = d3.mean(filtered, d => d.SH_XPD_CHEX_PC_CD);
+        const meanY = d3.mean(filtered, d => d.SP_DYN_LE00_IN);
+        const num = d3.sum(filtered, d => (d.SH_XPD_CHEX_PC_CD - meanX) * (d.SP_DYN_LE00_IN - meanY));
+        const den = d3.sum(filtered, d => Math.pow(d.SH_XPD_CHEX_PC_CD - meanX, 2));
+        const slope = num / den;
+        const intercept = meanY - slope * meanX;
+
+        g.append("line")
+          .attr("x1", x(0)).attr("y1", y(intercept))
+          .attr("x2", x(maxSpend)).attr("y2", y(intercept + slope * maxSpend))
+          .attr("stroke", "#dc2626")
+          .attr("stroke-width", 2)
+          .attr("stroke-dasharray", "6,4");
+      } else {
+        // Verified Logarithmic Preston Curve (LE = 47.86 + 4.07 ln(CHEX_PC))
+        const curvePts = d3.range(25, maxSpend, 100).map(v => ({
+          spend: v,
+          le: expectedLE(v)
+        }));
+
+        const area = d3.area()
+          .x(d => x(d.spend))
+          .y0(d => y(Math.max(42, d.le - 3.6)))
+          .y1(d => y(Math.min(89, d.le + 3.6)));
+
+        g.append("path")
+          .datum(curvePts)
+          .attr("fill", "#2563eb")
+          .attr("fill-opacity", 0.10)
+          .attr("d", area);
+
+        const line = d3.line()
+          .x(d => x(d.spend))
+          .y(d => y(d.le));
+
+        g.append("path")
+          .datum(curvePts)
+          .attr("fill", "none")
+          .attr("stroke", "#1d4ed8")
+          .attr("stroke-width", 2.5)
+          .attr("d", line);
+      }
+
+      // C3 Adaptive Mini-VLAT (< 6/12) Ratio-Comparison Anchors
+      if (state.condition === "C3" && state.vlatMode === "low") {
+        [500, 2000, 8000].forEach(anchorSpend => {
+          if (anchorSpend <= maxSpend) {
+            const leVal = expectedLE(anchorSpend);
+            g.append("line")
+              .attr("x1", x(anchorSpend)).attr("y1", y(42))
+              .attr("x2", x(anchorSpend)).attr("y2", y(leVal))
+              .attr("stroke", "#047857")
+              .attr("stroke-dasharray", "3,3")
+              .attr("stroke-width", 1.3);
+
+            g.append("text")
+              .attr("x", x(anchorSpend) + 4)
+              .attr("y", y(leVal) + 14)
+              .style("font-size", "10px")
+              .style("fill", "#047857")
+              .style("font-weight", "600")
+              .text(`$${anchorSpend.toLocaleString()} → ${leVal.toFixed(1)}y`);
+          }
+        });
+      }
+
+      // C2 Direct Canvas Outlier Callout
+      const usa = filtered.find(d => d.iso3 === "USA");
+      if (usa && (state.condition === "C2" || (state.condition === "C3" && state.stage >= 3))) {
+        const predUsa = expectedLE(usa.SH_XPD_CHEX_PC_CD);
+        g.append("line")
+          .attr("x1", x(usa.SH_XPD_CHEX_PC_CD)).attr("y1", y(usa.SP_DYN_LE00_IN))
+          .attr("x2", x(usa.SH_XPD_CHEX_PC_CD)).attr("y2", y(predUsa))
+          .attr("stroke", "#b91c1c")
+          .attr("stroke-width", 2)
+          .attr("stroke-dasharray", "4,3");
+
+        g.append("text")
+          .attr("x", x(usa.SH_XPD_CHEX_PC_CD) - 10)
+          .attr("y", y((usa.SP_DYN_LE00_IN + predUsa) / 2))
+          .attr("text-anchor", "end")
+          .style("font-size", "11px")
+          .style("font-weight", "700")
+          .style("fill", "#b91c1c")
+          .text("USA Residual: −7.69 yrs");
+      }
+
+      // Bubbles
+      const tooltip = d3.select("#tooltip");
+      const interactive = (state.condition === "C3" && state.stage >= 2);
+
+      g.selectAll("circle.country")
+        .data(filtered, d => d.iso3)
+        .join("circle")
+        .attr("class", "country")
+        .attr("cx", d => x(d.SH_XPD_CHEX_PC_CD))
+        .attr("cy", d => y(d.SP_DYN_LE00_IN))
+        .attr("r", d => rScale(d.NY_GDP_PCAP_PP_CD))
+        .attr("fill", d => d.iso3 === "USA" && state.condition !== "C1" ? "#dc2626" : color(d.SH_UHC_SRVS_CV_XD))
+        .attr("fill-opacity", 0.84)
+        .attr("stroke", d => d.iso3 === "USA" ? "#7f1d1d" : "#1e293b")
+        .attr("stroke-width", d => d.iso3 === "USA" ? 2 : 0.9)
+        .style("cursor", interactive ? "pointer" : "default")
+        .on("mouseover", function(event, d) {
+          if (!interactive) return;
+          d3.select(this).attr("stroke-width", 2.5).attr("fill-opacity", 1);
+          const resid = d.SP_DYN_LE00_IN - expectedLE(d.SH_XPD_CHEX_PC_CD);
+          tooltip
+            .style("opacity", 1)
+            .html(`
+              <strong>${d.country_name} (${d.iso3})</strong><br/>
+              Life Expectancy: ${d.SP_DYN_LE00_IN.toFixed(1)} yrs<br/>
+              Health Exp./Capita: $${Math.round(d.SH_XPD_CHEX_PC_CD).toLocaleString()}<br/>
+              Preston Residual: ${resid >= 0 ? "+" : ""}${resid.toFixed(2)} yrs
+            `);
+          updateInspector(d);
+          logEvent("hover_country", d.iso3);
+        })
+        .on("mousemove", function(event) {
+          if (!interactive) return;
+          tooltip
+            .style("left", (event.clientX + 14) + "px")
+            .style("top", (event.clientY - 28) + "px");
+        })
+        .on("mouseout", function() {
+          if (!interactive) return;
+          d3.select(this).attr("stroke-width", d => d.iso3 === "USA" ? 2 : 0.9).attr("fill-opacity", 0.84);
+          tooltip.style("opacity", 0);
+        })
+        .on("click", function(_, d) {
+          if (!interactive) return;
+          updateInspector(d);
+          logEvent("click_country", d.iso3);
+        });
+
+      // Country Labels for key anchors
+      const labelIsos = new Set(["USA", "JPN", "CHE", "SGP", "IND", "NGA"]);
+      g.selectAll("text.country-lbl")
+        .data(filtered.filter(d => labelIsos.has(d.iso3)))
+        .join("text")
+        .attr("class", "country-lbl")
+        .attr("x", d => x(d.SH_XPD_CHEX_PC_CD) + rScale(d.NY_GDP_PCAP_PP_CD) + 4)
+        .attr("y", d => y(d.SP_DYN_LE00_IN) + 4)
+        .style("font-size", "10.5px")
+        .style("font-weight", "600")
+        .style("fill", "#0f172a")
+        .text(d => d.iso3);
+
+      // 2. Render Regional Summary Bar Chart
+      const barSvg = d3.select("#barSvg");
+      barSvg.selectAll("*").remove();
+      const bW = 380, bH = 250;
+      const bM = { top: 12, right: 18, bottom: 28, left: 138 };
+      const biW = bW - bM.left - bM.right;
+      const biH = bH - bM.top - bM.bottom;
+
+      const regSummary = d3.rollups(
+        filtered,
+        v => d3.mean(v, d => d.SP_DYN_LE00_IN),
+        d => d.region
+      ).map(([region, meanLE]) => ({ region, meanLE }))
+       .sort((a, b) => b.meanLE - a.meanLE);
+
+      const bg = barSvg.append("g").attr("transform", `translate(${bM.left},${bM.top})`);
+      const bx = d3.scaleLinear().domain([0, 90]).range([0, biW]);
+      const by = d3.scaleBand().domain(regSummary.map(d => d.region)).range([0, biH]).padding(0.24);
+
+      bg.append("g")
+        .attr("transform", `translate(0,${biH})`)
+        .call(d3.axisBottom(bx).ticks(5))
+        .selectAll("text").style("font-size", "10px");
+
+      bg.append("g")
+        .call(d3.axisLeft(by))
+        .selectAll("text").style("font-size", "9.5px");
+
+      bg.selectAll("rect")
+        .data(regSummary)
+        .join("rect")
+        .attr("x", 0)
+        .attr("y", d => by(d.region))
+        .attr("width", d => bx(d.meanLE))
+        .attr("height", by.bandwidth())
+        .attr("fill", "#2563eb")
+        .attr("rx", 3);
+
+      bg.selectAll("text.val")
+        .data(regSummary)
+        .join("text")
+        .attr("class", "val")
+        .attr("x", d => bx(d.meanLE) + 4)
+        .attr("y", d => by(d.region) + by.bandwidth() / 2 + 3.5)
+        .style("font-size", "10px")
+        .style("font-weight", "600")
+        .text(d => `${d.meanLE.toFixed(1)}y`);
+    }
+
+    function syncUI() {
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.cond === state.condition);
+      });
+
+      document.getElementById("c2Banners").classList.toggle("visible", state.condition === "C2");
+      document.getElementById("c3Controls").classList.toggle("visible", state.condition === "C3");
+      document.getElementById("regionGroup").style.display = (state.condition === "C3" && state.stage >= 2) ? "flex" : "none";
+      document.getElementById("c3NeutralNotes").classList.toggle("visible", state.condition === "C3" && state.stage >= 3);
+
+      document.querySelectorAll(".stage-btn").forEach(btn => {
+        btn.classList.toggle("active", Number(btn.dataset.stage) === state.stage);
+      });
+
+      updateInspector(null);
+      renderCharts();
+    }
+
+    // Event Listeners
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.condition = btn.dataset.cond;
+        logEvent("switch_condition", state.condition);
+        syncUI();
+      });
+    });
+
+    document.querySelectorAll(".stage-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.stage = Number(btn.dataset.stage);
+        logEvent("switch_stage", `Stage ${state.stage}`);
+        syncUI();
+      });
+    });
+
+    document.getElementById("regionSelect").addEventListener("change", (e) => {
+      state.region = e.target.value;
+      logEvent("filter_region", state.region);
+      renderCharts();
+    });
+
+    document.getElementById("vlatToggle").addEventListener("change", (e) => {
+      state.vlatMode = e.target.value;
+      logEvent("toggle_vlat_mode", state.vlatMode);
+      renderCharts();
+    });
+
+    // Load full verified CSV (wdi_who_country_means_imputed.csv)
+    document.getElementById("csvInput").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const parsed = d3.csvParse(ev.target.result, d => ({
+          iso3: d.iso3,
+          country_name: d.country_name,
+          region: d.region,
+          SP_DYN_LE00_IN: +d["SP.DYN.LE00.IN"],
+          NY_GDP_PCAP_PP_CD: +d["NY.GDP.PCAP.PP.CD"],
+          SH_XPD_CHEX_PC_CD: +d["SH.XPD.CHEX.PC.CD"],
+          SH_XPD_CHEX_GD_ZS: +d["SH.XPD.CHEX.GD.ZS"],
+          SH_UHC_SRVS_CV_XD: +d["SH.UHC.SRVS.CV.XD"],
+          SH_XPD_OOPC_CH_ZS: +d["SH.XPD.OOPC.CH.ZS"],
+          SH_DYN_MORT: +d["SH.DYN.MORT"],
+          SH_STA_MMRT: +d["SH.STA.MMRT"]
+        }));
+        if (parsed.length > 0 && !Number.isNaN(parsed[0].SP_DYN_LE00_IN)) {
+          state.data = parsed;
+          document.getElementById("datasetBadge").innerHTML =
+            `<strong>Dataset:</strong> Loaded ${file.name} (M = ${parsed.length} nations)`;
+          populateRegionDropdown();
+          logEvent("load_verified_csv", `${file.name} (${parsed.length} rows)`);
+          syncUI();
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById("exportTelemetryBtn").addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(state.events, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "d3_client_instrumentation_log.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    populateRegionDropdown();
+    syncUI();
+  </script>
+</body>
+</html>
