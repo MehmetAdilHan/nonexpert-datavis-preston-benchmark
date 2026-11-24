@@ -10,6 +10,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{cite}
+\usepackage{graphicx}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{mathtools}
 \usepackage{textcomp}
@@ -133,12 +134,7 @@ We implemented the 12-step experimental pipeline designed in Phase~2 across four
 
 \begin{figure*}[!t]
 \centering
-\framebox{\parbox{0.92\textwidth}{\centering\small
-\textbf{Phase~I: Data Ingestion \& Preprocessing} (WDI/WHO 2015--2023, $M = \WdiM$, Min-Max $[0,1]$, KNN $k=5$) $\longrightarrow$
-\textbf{Phase~II: D3.js~v7 Stimulus Apparatus} (C1 Baseline, C2 Annotated, C3 Progressive Disclosure) $\longrightarrow$
-\textbf{Phase~III: Stratified 2PL-IRT Simulation} ($N=300$ Main Cohort; $N=100$ Ablation; 12-Item Mini-VLAT) $\longrightarrow$
-\textbf{Phase~IV: Psychometric Modeling} (Type~III ANCOVA, TCE/SCB Calibration, Brier \& ADR Regret)
-}}
+\includegraphics[width=0.92\textwidth]{figures/fig1.png}
 \caption{End-to-end 4-phase, 12-step Milestone~3 experimental implementation and evaluation architecture integrating World Bank/WHO preprocessing, D3.js~v7 progressive disclosure stimuli, and psychometric calibration modeling.}
 \label{fig:pipeline}
 \end{figure*}
@@ -227,10 +223,7 @@ As summarized in Fig.~\ref{fig:stimulus}, regressing Life Expectancy on log-tran
 
 \begin{figure*}[!t]
 \centering
-\framebox{\parbox{0.92\textwidth}{\centering\small
-\textbf{Panel A (Preston Curve OLS, $n=191$ Non-U.S.):} $\widehat{\text{LE}} = \PrestonBetaZero + \PrestonBetaOne \ln(\text{CHEX\_PC})$, $R^2 = \PrestonRsq$, $p = 4.05 \times 10^{-51}$; USA Outlier: \UsaLeObs{} yrs vs.\ \UsaLePred{} yrs ($\UsaLeResid$ yrs at \UsaChexPc{} US\$).\\[3pt]
-\textbf{Panel B (Preprocessing Audit, $M=\WdiM$, \WdiTotalCells{} Cells):} Overall missingness $= \WdiMissingPct$ (\WdiMissingCells{} cells in \texttt{NY.GDP.PCAP.PP.CD}); 5-fold holdout KNN ($k=5$) NRMSE $= \WdiKnnNrmse$ (range $0.078$--$0.222$).
-}}
+\includegraphics[width=0.92\textwidth]{figures/fig2.png}
 \caption{(A) Preprocessed World Bank/WHO Preston Curve stimulus dataset ($M = \WdiM$ countries, 2015--2023) highlighting logarithmic diminishing returns ($R^2 = \PrestonRsq$) and the United States spending outlier residual ($\UsaLeResid$ years). (B) Pre-imputation missingness rates and distance-weighted KNN ($k = 5$) 5-fold holdout normalized RMSE across all eight indicators.}
 \label{fig:stimulus}
 \end{figure*}
@@ -281,13 +274,7 @@ By contrast, Condition C3 (Interactive-Scaffolded Progressive Disclosure) simult
 
 \begin{figure*}[!t]
 \centering
-\framebox{\parbox{0.84\textwidth}{\centering\small
-\textbf{Primary Condition Distribution Summary ($N = 300$, $n = 100$/arm):}
-(A) Comprehension: C1 $56.2\% \rightarrow$ C2 $70.0\% \rightarrow$ C3 $82.8\%$ ($F = 178.26$, $\etap = 0.546$);
-(B) Trust: C1 $5.20 \rightarrow$ C2 $4.40 \rightarrow$ C3 $5.53$ ($F = 54.92$, $\etap = 0.271$);
-(C) Brier Score: C1 $0.273 \rightarrow$ C2 $0.197 \rightarrow$ C3 $0.133$ ($F = 254.80$, $\etap = 0.633$);
-(D) NASA-TLX Load: C1 $62.0 \rightarrow$ C2 $53.4 \rightarrow$ C3 $43.2$ ($F = 108.17$, $\etap = 0.422$).
-}}
+\includegraphics[width=0.84\textwidth]{figures/fig3.png}
 \caption{Primary simulated benchmark outcomes across visualization conditions ($N = 300$; group means and 95\% confidence intervals reported in Tables~\ref{tab:primary}--\ref{tab:posthoc}): (A) Objective Comprehension Accuracy, (B) Perceived Trustworthiness, (C) Probabilistic Decision Brier Score, and (D) Subjective NASA-TLX Cognitive Load.}
 \label{fig:outcomes}
 \end{figure*}
@@ -344,10 +331,7 @@ High Literacy (9--12)    & 76.3\% (9.8)  & 82.0\% (8.1)  & 91.0\% (5.9) & $+14.7
 
 \begin{figure*}[!t]
 \centering
-\framebox{\parbox{0.88\textwidth}{\centering\small
-\textbf{Panel A (Trust--Comprehension Calibration Plane):} Ideal diagonal $\Tnorm = \Cnorm$; C1 exhibits overtrust ($\SCB = +0.138$, $27.0\%$ Illusion rate), C2 shifts to undertrust ($\SCB = -0.133$), and C3 converges to $\TCE = 0.121$ ($0.0\%$ Illusion rate).\\[3pt]
-\textbf{Panel B (Mini-VLAT Literacy Tier Trajectory):} Low-VLAT comprehension rises from $33.9\%$ (C1) to $74.1\%$ (C3, $+40.2$\,pp), cutting the Low--High literacy gap by $60.1\%$.
-}}
+\includegraphics[width=0.88\textwidth]{figures/fig4.png}
 \caption{(A) Trust--Comprehension Calibration Plane mapping normalized accuracy against normalized trust relative to the ideal calibration diagonal ($\Tnorm = \Cnorm$) and the ``Illusion of Understanding'' failure zone. (B) Comprehension accuracy across Low, Moderate, and High Mini-VLAT literacy tiers demonstrating the $+40.2$\,pp low-literacy rescue under C3.}
 \label{fig:calibration}
 \end{figure*}
@@ -408,13 +392,7 @@ The ablation hierarchy demonstrates a clean functional dissociation across C3's 
 
 \begin{figure*}[!t]
 \centering
-\framebox{\parbox{0.92\textwidth}{\centering\small
-\textbf{Ablation Dissociation Profile ($N = 100$ vs.\ Full C3 Reference):}
-\textbf{A1} ($-$Tooltips): Comp.\ $-12.3$\,pp$^{***}$;
-\textbf{A2} ($-$3-Stage Staging): NASA-TLX $+15.1$ pts;
-\textbf{A3} ($-$Neutrality Framing): Trust $-0.83^{***}$, TCE $+52.1\%$;
-\textbf{A4} ($-$Adaptive Mini-VLAT): Comp.\ $-8.5$\,pp$^{***}$, NASA-TLX $+10.9$ pts.
-}}
+\includegraphics[width=0.92\textwidth]{figures/fig5.png}
 \caption{Component ablation analysis ($N = 100$) illustrating the distinct functional roles of interactive tooltips (comprehension), progressive staging (cognitive load), neutrality framing (trust preservation), and adaptive VLAT thresholding (literacy equity).}
 \label{fig:ablation}
 \end{figure*}
@@ -518,3 +496,4 @@ M.~A. Khan and Z.~Hussain, ``Non-Expert Data Visualization Benchmark: Verified W
 \end{thebibliography}
 
 \end{document}
+
